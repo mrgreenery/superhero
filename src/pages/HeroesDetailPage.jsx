@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { API_BASE } from '../config'
-import './HeroDetailPage.css'
+import './HeroesDetailPage.css'
 
 const ALIGNMENT_COLORS = { good: '#2e7d32', bad: '#c62828', neutral: '#555' }
 const STAT_LABELS = {
