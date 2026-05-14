@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { API_BASE } from '../config'
-import './HeroesDetailPage.css'
+import './HeroDetailPage.css'
 
 const ALIGNMENT_COLORS = { good: '#2e7d32', bad: '#c62828', neutral: '#555' }
 const STAT_LABELS = {
@@ -14,7 +14,7 @@ function StatBar({ label, value }) {
   return (
     <div className="stat-row">
       <span className="stat-label">{label}</span>
-      <span className="stat-value">{value === 'null' || !value ? '—' : value}</span>
+      <span className="stat-value">{!value || value === 0 ? '—' : value}</span>
       <div className="stat-bar-bg">
         <div
           className="stat-bar"
@@ -38,13 +38,9 @@ export default function HeroDetailPage() {
   useEffect(() => {
     setLoading(true)
     setError(null)
-    fetch(`${API_BASE}/${id}`)
-      .then(r => r.json())
-      .then(d => {
-        if (d.response !== 'success') throw new Error(d.error || 'Hero not found')
-        setHero(d)
-        setLoading(false)
-      })
+    fetch(`${API_BASE}/id/${id}.json`)
+      .then(r => { if (!r.ok) throw new Error('Hero not found'); return r.json() })
+      .then(d => { setHero(d); setLoading(false) })
       .catch(e => { setError(e.message); setLoading(false) })
   }, [id])
 
@@ -66,15 +62,15 @@ export default function HeroDetailPage() {
       <div className="detail-card">
         <div className="detail-hero">
           <div className="detail-img-wrap">
-            {hero.image?.url
-              ? <img src={hero.image.url} alt={hero.name} className="detail-sprite" />
+            {hero.images?.lg
+              ? <img src={hero.images.lg} alt={hero.name} className="detail-sprite" />
               : <div className="detail-img-placeholder">?</div>
             }
           </div>
           <div className="detail-meta">
             <h1 className="detail-name">{hero.name}</h1>
-            {hero.biography?.['full-name'] && hero.biography['full-name'] !== hero.name && (
-              <p className="full-name">{hero.biography['full-name']}</p>
+            {hero.biography?.fullName && hero.biography.fullName !== hero.name && (
+              <p className="full-name">{hero.biography.fullName}</p>
             )}
             <div className="badges">
               {hero.biography?.publisher && (
@@ -84,9 +80,9 @@ export default function HeroDetailPage() {
                 {alignment}
               </span>
             </div>
-            {hero.biography?.['first-appearance'] && (
+            {hero.biography?.firstAppearance && (
               <p className="first-appearance">
-                First appearance: <strong>{hero.biography['first-appearance']}</strong>
+                First appearance: <strong>{hero.biography.firstAppearance}</strong>
               </p>
             )}
           </div>
@@ -110,9 +106,9 @@ export default function HeroDetailPage() {
                 ['Race', hero.appearance?.race],
                 ['Height', hero.appearance?.height?.[1]],
                 ['Weight', hero.appearance?.weight?.[1]],
-                ['Eye color', hero.appearance?.['eye-color']],
-                ['Hair color', hero.appearance?.['hair-color']],
-              ].filter(([, v]) => v && v !== 'null' && v !== '-').map(([label, value]) => (
+                ['Eye color', hero.appearance?.eyeColor],
+                ['Hair color', hero.appearance?.hairColor],
+              ].filter(([, v]) => v && v !== '-').map(([label, value]) => (
                 <div key={label} className="info-item">
                   <span className="info-label">{label}</span>
                   <span className="info-value">{value}</span>
@@ -132,10 +128,10 @@ export default function HeroDetailPage() {
             </section>
           )}
 
-          {hero.connections?.['group-affiliation'] && hero.connections['group-affiliation'] !== '-' && (
+          {hero.connections?.groupAffiliation && hero.connections.groupAffiliation !== '-' && (
             <section>
               <h2>Group Affiliations</h2>
-              <p className="connections-text">{hero.connections['group-affiliation']}</p>
+              <p className="connections-text">{hero.connections.groupAffiliation}</p>
             </section>
           )}
 

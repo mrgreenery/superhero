@@ -10,8 +10,8 @@ export default function HeroCard({ hero }) {
   return (
     <button className="hero-card" onClick={() => navigate(`/hero/${hero.id}`)}>
       <div className="hero-img-wrap">
-        {hero.image?.url
-          ? <img src={hero.image.url} alt={hero.name} loading="lazy" />
+        {hero.images?.md
+          ? <img src={hero.images.md} alt={hero.name} loading="lazy" />
           : <div className="hero-img-placeholder">?</div>
         }
       </div>
