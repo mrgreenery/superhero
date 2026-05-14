@@ -5,7 +5,7 @@ export default function AboutPage() {
     <div className="about-page">
       <h1>About</h1>
       <div className="about-card">
-        <img src="/YOUR_REPO_NAME/hero.svg" alt="Hero" width={80} height={80} />
+        <img src="/superhero/hero.svg" alt="Hero" width={80} height={80} />
         <h2>Superhero Browser</h2>
         <p>
           Browse 731 superheroes and villains from Marvel, DC, and beyond.

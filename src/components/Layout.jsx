@@ -7,7 +7,7 @@ export default function Layout() {
       <header className="header">
         <div className="header-inner">
           <span className="logo">
-            <img src="/YOUR_REPO_NAME/hero.svg" alt="" width={28} height={28} />
+            <img src="/superhero/hero.svg" alt="" width={28} height={28} />
             Superhero Browser
           </span>
           <nav>
